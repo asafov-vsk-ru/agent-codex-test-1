@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package file.trash;
+
+option java_package = "ru.vsk.s3servicedms.trashService";
+option java_multiple_files = true;
+
+message TrashRequestByFileId {
+  string fileId = 1;
+  string trashedBy = 2;
+}
+
+message TrashRequestByExternalFileId {
+  string externalFileId = 1;
+  string source = 2;
+  string trashedBy = 3;
+}
+
+message RestoreRequestByFileId {
+  string fileId = 1;
+  string restoredBy = 2;
+}
+
+message RestoreRequestByExternalFileId {
+  string externalFileId = 1;
+  string source = 2;
+  string restoredBy = 3;
+}
+
+message TrashServiceResponse {
+  string status = 1;
+}
+
+service TrashService {
+  rpc moveToTrashByFileId(TrashRequestByFileId) returns (TrashServiceResponse);
+  rpc moveToTrashByExternalFileId(TrashRequestByExternalFileId) returns (TrashServiceResponse);
+  rpc restoreFromTrashByFileId(RestoreRequestByFileId) returns (TrashServiceResponse);
+  rpc restoreFromTrashByExternalFileId(RestoreRequestByExternalFileId) returns (TrashServiceResponse);
+}

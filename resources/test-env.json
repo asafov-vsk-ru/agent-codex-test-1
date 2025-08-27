@@ -1,0 +1,8 @@
+{
+  "data_base_host": "test database host",
+  "grpc_service_host": "test grpc service host",
+  "rest_json_service_host": "test rest json service host",
+  "soap_xml_service_host": "test soap xml service host",
+  "main_page_url": "test main page url",
+  "kafka_host": "test kafka host"
+}

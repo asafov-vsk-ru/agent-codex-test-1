@@ -1,0 +1,8 @@
+{
+  "data_base_host": "stage database host",
+  "grpc_service_host": "stage grpc service host",
+  "rest_json_service_host": "stage rest json service host",
+  "soap_xml_service_host": "stage soap xml service host",
+  "main_page_url": "stage main page url",
+  "kafka_host": "stage kafka host"
+}

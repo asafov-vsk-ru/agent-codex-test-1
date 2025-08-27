@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package file.DMSdownload;
+
+option java_package = "ru.vsk.s3servicedms.DMSfiledownload";
+option java_multiple_files = true;
+
+
+message DownloadFileRequest {
+  string fileID = 1;
+  string storage = 2;
+}
+
+message DataChunk {
+  bytes data = 1;
+  int32 size = 2;
+}
+
+message Error {
+  string code = 1;
+  string message = 2;
+}
+
+message DownloadFileResponse {
+  string status = 1;
+  string file = 2;
+  repeated Error errors = 3;
+}
+
+service DMSFileDownloadService {
+  rpc downloadFile (DownloadFileRequest) returns (stream DataChunk);
+  rpc downloadFileBase64 (DownloadFileRequest) returns (DownloadFileResponse);
+}

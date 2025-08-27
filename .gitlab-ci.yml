@@ -1,0 +1,59 @@
+stages:
+    - Static_analysis
+    - build
+linters:
+    stage: Static_analysis
+    image: repo.vsk.ru:5001/python:3.10-slim-buster
+    script:
+        - echo "Installing flake & mypy & pylint & other dependiences"
+        - pip install flake8 mypy pylint -i http://repo.vsk.ru/repository/pypi.org/simple --trusted-host repo.vsk.ru
+        - flake8 --filename=*.py . --exclude .git,__pycache__,docs/source/conf.py,old,build,dist --max-complexity 10 --max-line-length=300 --exit-zero --ignore 501
+        #- python -m mypy ./*.py
+        - pylint  --recursive=y .
+    allow_failure: true
+    tags:
+        - docker
+        - shared
+        - linux
+
+sast_analyze:
+    stage: Static_analysis
+    image: repo.vsk.ru:5001/sonarsource/sonar-scanner-cli:latest
+    variables:
+      SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar" # Defines the location of the analysis task cache
+      SONAR_HOST_URL: ${SONARQUBE_URL}
+      SONAR_LOGIN: ${SONAR_TOKEN}
+    before_script:
+        - echo $CI_REGISTRY_USER $CI_COMMIT_SHA
+    script:
+        - echo "Starting analyze code with sonarqube"
+        - sonar-scanner -Dsonar.qualitygate.wait=true -Dsonar.jproperties.sourcencoding=-8 -Dsonar.java.binaries=. -Dsonar.projectKey=${CI_PROJECT_NAME}
+    allow_failure: true
+    tags:
+        - docker
+        - shared
+        - linux
+
+
+build:
+    image: repo.vsk.ru:5001/python:3.7-slim-buster
+    stage: build
+    before_script:
+        - echo $CI_REGISTRY_USER $CI_COMMIT_SHA
+        - echo "Preparing enviroment for build&push package"
+        - pip install twine -i http://repo.vsk.ru/repository/pypi.org/simple --trusted-host repo.vsk.ru
+        - export TWINE_REPOSITORY=${REPOSITORY}
+        - export TWINE_REPOSITORY_URL=${TWINE_REPOSITORY_URL}
+        - export TWINE_USERNAME=${REPO_USERNAME}
+        - export TWINE_PASSWORD=${REPO_PASSWORD}
+        - export TWINE_CERT=cavsk.crt
+    script:
+        - echo "Building python package"
+        - pip wheel . -w wheels -i https://repo.vsk.ru/repository/foundation-pylibs/ --trusted-host repo.vsk.ru --no-deps
+        - echo "Push package to Nexus"
+        - twine upload -r ${REPOSITORY} --skip-existing wheels/*.whl
+    tags:
+        - docker
+        - linux
+        - shared
+

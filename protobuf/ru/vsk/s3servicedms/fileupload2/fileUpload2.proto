@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package file.upload;
+
+option java_package = "ru.vsk.s3servicedms.fileupload2";
+option java_multiple_files = true;
+
+message UploadRequest {
+  string fileName = 1;
+  string externalFileId = 2;
+  string source = 3;
+  string permission = 4;
+  bytes file = 5;
+  repeated FileElement fields = 6;
+}
+
+message FileElement {
+  string metaCode = 1;
+  string metaValue = 2;
+}
+
+message UploadResponse {
+  string name = 1;
+  string fileId = 2;
+  StatusUpload status = 3;
+}
+
+enum StatusUpload {
+  UPLOAD_PENDING = 0;
+  UPLOAD_IN_PROGRESS = 1;
+  UPLOAD_SUCCESS = 2;
+  UPLOAD_FAILED = 3;
+}
+
+
+service UploadService {
+  rpc upload2(stream UploadRequest) returns(UploadResponse);
+}

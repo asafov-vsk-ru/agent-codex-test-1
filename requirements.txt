@@ -1,0 +1,32 @@
+# Main testing framework
+pytest==8.3.4
+pytest-xdist==3.6.1
+# UI testing framework
+playwright==1.50.0
+pytest-playwright==0.7.0
+# REST API client
+requests==2.32.3
+# GRPC client & Protobuf protocol
+grpcio==1.71.0
+grpcio-status==1.71.0
+grpcio-testing==1.71.0
+grpcio-tools==1.71.0
+grpcio-reflection==1.71.0
+protobuf==5.29.4
+# Apache Kafka client
+confluent-kafka==2.8.0
+# Postgres database client
+sqlalchemy==2.0.40
+psycopg2==2.9.10
+pymysql==1.1.1
+# Test data generator
+faker==37.1.0
+# Load environment variables
+python-dotenv==1.1.0
+# Serialization-DeSerialization
+pydantic==2.11.1
+pydantic-xml==2.16.0
+# Result test report
+allure-pytest==2.13.5
+# Other
+lxml==5.3.1

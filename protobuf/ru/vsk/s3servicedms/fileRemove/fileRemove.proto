@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package file.delete;
+
+option java_package = "ru.vsk.s3servicedms.fileRemove";
+option java_multiple_files = true;
+
+message RemoveRequest {
+  string fileId = 1;
+}
+
+message RemoveResponse {
+  string date = 1;
+  string message = 2;
+}
+
+service FileRemoveService {
+  rpc fileRemove(RemoveRequest) returns (RemoveResponse);
+}

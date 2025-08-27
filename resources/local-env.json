@@ -1,0 +1,8 @@
+{
+  "data_base_host": "default database host",
+  "grpc_service_host": "default grpc service host",
+  "rest_json_service_host": "default rest json service host",
+  "soap_xml_service_host": "default soap xml service host",
+  "main_page_url": "default main page url",
+  "kafka_host": "default kafka host"
+}

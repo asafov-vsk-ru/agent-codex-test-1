@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package file.filesInfo;
+
+option java_package = "ru.vsk.s3servicedms.filesinfo";
+
+message Error {
+  string code = 1;
+  string message = 2;
+}
+
+message MetaInfo {
+  string name = 1;
+  string description = 2;
+  string value = 3;
+}
+
+message FilesByInsGUIDRequest {
+  string guid = 1;
+  string system = 2;
+}
+
+message FileInfo {
+  string fileName = 1;
+  string fileID = 2;
+  string storage = 3;
+  repeated MetaInfo meta = 4;
+}
+
+message FilesByInsGUIDResponse {
+  string status = 1;
+  repeated FileInfo filesInfo = 2;
+  repeated Error errors = 3;
+}
+
+service FilesInfoService {
+  rpc getFilesInfoByInsured (FilesByInsGUIDRequest) returns (FilesByInsGUIDResponse);
+}
