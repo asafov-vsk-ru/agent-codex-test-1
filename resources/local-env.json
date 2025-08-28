@@ -4,5 +4,6 @@
   "rest_json_service_host": "default rest json service host",
   "soap_xml_service_host": "default soap xml service host",
   "main_page_url": "default main page url",
-  "kafka_host": "default kafka host"
+  "kafka_host": "default kafka host",
+  "kafka_password": "default kafka password"
 }

@@ -1,5 +1,3 @@
-import os
-
 import allure
 import sqlalchemy
 from sqlalchemy import Connection, Engine
@@ -9,12 +7,11 @@ class DataBaseClient:
     engine: Engine = None
     connection: Connection = None
 
-    def __init__(self, host: str, username: str):
-        uri = self.__get_uri(host, username)
+    def __init__(self, host: str, username: str, password: str):
+        uri = self.__get_uri(host, username, password)
         self.engine = sqlalchemy.create_engine(uri)
 
-    def __get_uri(self, host: str, username: str) -> str:
-        password = os.environ["DB_PASSWORD"]
+    def __get_uri(self, host: str, username: str, password: str) -> str:
         if host.__contains__("postgresql"):
             provider = "postgresql+psycopg2"
         elif host.__contains__("mysql"):

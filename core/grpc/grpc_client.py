@@ -1,5 +1,3 @@
-import os
-
 import allure
 import grpc
 
@@ -24,10 +22,13 @@ class GrpcClient:
     __credential = None
     __token = None
     __certificate = None
+    __certificate_path = None
 
-    def __init__(self, host: str, reflection: bool = True):
+    def __init__(self, host: str, reflection: bool = True, token: str | None = None, certificate_path: str | None = None):
         self.host = host
         self.reflection = reflection
+        self.__token = token
+        self.__certificate_path = certificate_path
 
     @allure.step("Получаем список всех gRPC сервисов")
     def get_all_services_names(self) -> List[str]:
@@ -59,11 +60,16 @@ class GrpcClient:
             print("Ошибка создания gRPC соединения, проверьте параметры!")
 
     def __get_credential_type(self):
-        grpc_token = os.environ["GRPC_TOKEN"]
-        certificate_path = os.environ["GRPC_CERTIFICATE"]
-        if grpc_token is None and certificate_path is None:
-            return grpc.insecure_channel(self.host)
-        elif certificate_path is None:
+        grpc_token = self.__token
+        certificate_path = self.__certificate_path
+        if not grpc_token and not certificate_path:
+            return CredentialType.NONE
+        elif not certificate_path:
             return CredentialType.TOKEN
         else:
+            try:
+                with open(certificate_path, "rb") as cert:
+                    self.__certificate = cert.read()
+            except (OSError, TypeError):
+                self.__certificate = None
             return CredentialType.CERTIFICATE
