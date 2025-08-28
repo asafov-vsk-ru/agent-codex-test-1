@@ -4,5 +4,6 @@
   "rest_json_service_host": "dev rest json service host",
   "soap_xml_service_host": "dev soap xml service host",
   "main_page_url": "dev main page url",
-  "kafka_host": "dev kafka host"
+  "kafka_host": "dev kafka host",
+  "kafka_password": "fgsdfgsdfg"
 }
