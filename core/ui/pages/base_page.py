@@ -13,9 +13,9 @@ class BasePage(ABC):
 
     def open(self, **kwargs) -> Response | None:
         with allure.step(f'Открываем страницу {self._url}'):
-            page = self._page.goto(self._url, **kwargs)
-        expect(page).to_have_title(re.compile(self._title))
-        return page
+            response = self._page.goto(self._url, **kwargs)
+        expect(self._page).to_have_title(re.compile(self._title))
+        return response
 
     def refresh(self, **kwargs) -> Response | None:
         with allure.step(f'Обновляем страницу {self._url}'):
