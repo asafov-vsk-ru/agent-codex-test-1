@@ -1,8 +1,7 @@
-import re
 import pytest
 import allure
 
-from playwright.sync_api import Page, expect
+from core.ui.pages.vsk_clients_main_page import VskMainPage
 from tests.base_test import BaseTest
 
 
@@ -16,6 +15,5 @@ class TestMainPage(BaseTest):
     @allure.description("This test open main web page")
     @allure.tag("Smoke", "Functional", "Positive")
     def test_main_page(self):
-        page = self.browser.new_page()
-        page.goto("https://www.stage.vsk.ru/klientam")
-        assert page.title() == "ВСК"
+        main_page = VskMainPage(self.browser.new_page())
+        main_page.open()

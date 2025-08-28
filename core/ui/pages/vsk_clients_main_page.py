@@ -1,11 +1,10 @@
-from core.ui.pages import BasePage
+from core.ui.pages.base_page import BasePage
 
 
 class VskMainPage(BasePage):
 
-    url: str = "https://www.stage.vsk.ru/klientam"
-    title: str = ("Страховой Дом ВСК - страхование физических и юридических лиц. Страховые полисы КАСКО, ОСАГО, ДМС. "
-                  "Расчет и оформление страховки онлайн")
+    _url: str = "https://www.stage.vsk.ru/klientam"
+    _title: str = "ВСК"
 
     # Accept cookie panel (Header)
     vsk_cookie_panel: str = "//vsk-cookie-panel[@class='ng-star-inserted']"

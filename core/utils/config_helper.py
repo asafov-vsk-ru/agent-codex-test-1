@@ -1,5 +1,5 @@
 import logging
-from os import sep, path
+from os import path
 
 import allure
 
@@ -17,6 +17,7 @@ class EnvironmentConfig(BaseModel):
     soap_xml_service_host: Optional[str]
     main_page_url: Optional[str]
     kafka_host: Optional[str]
+    kafka_password: Optional[str]
 
 
 class ApplicationConfig(BaseModel):
@@ -65,7 +66,7 @@ class ConfigFactory:
 
     @classmethod
     def __load_environment_config(cls, config_file_name: str = "local-env.json") -> EnvironmentConfig:
-        file_path = ConfigFactory.__check_file_path(f"{ConfigFactory.__check_catalog_path()}\\{config_file_name}")
+        file_path = ConfigFactory.__check_file_path(path.join(ConfigFactory.__check_catalog_path(), config_file_name))
         with open(file_path) as file:
             content = file.read()
         return EnvironmentConfig.model_validate_json(content)
@@ -75,20 +76,21 @@ class ConfigFactory:
         comment_char: str = '#'
         separate_char: str = '='
         props: dict = {}
-        file_path = ConfigFactory.__check_file_path(f"{ConfigFactory.__check_catalog_path()}\\{config_file_name}")
+        file_path = ConfigFactory.__check_file_path(path.join(ConfigFactory.__check_catalog_path(), config_file_name))
         with open(file_path) as file:
             content = file.readlines()
             for line in content:
                 if line.strip() and not line.strip().startswith(comment_char):
                     key_value = line.split(separate_char)
-                    props[key_value[0].strip().replace('.', '_')] = sep.join(key_value[1:]).strip()
+                    value = separate_char.join(key_value[1:]).strip()
+                    props[key_value[0].strip().replace('.', '_')] = value
         return ApplicationConfig(**props)
 
     @classmethod
     def __check_catalog_path(cls) -> str:
-        current_dir = f"{Path(__file__).resolve().parents[2]}\\resources"
-        if path.exists(current_dir):
-            return current_dir
+        current_dir = Path(__file__).resolve().parents[2] / "resources"
+        if current_dir.exists():
+            return str(current_dir)
         else:
             raise FileNotFoundError("Директория \"resources\" отсутствует в проекте! Создайте нужный каталог "
                                     "с конфигурационными файлами и запустите приложение заново!")
