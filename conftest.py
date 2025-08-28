@@ -1,17 +1,12 @@
-import os
-import pytest
+import sys
+from pathlib import Path
 
 from dotenv import load_dotenv
 
+# Load variables from .env if present
 load_dotenv()
 
-
-# pytest_plugins = [
-#    'fixtures.page'
-# ]
-
-
-@pytest.fixture(autouse=True, scope="session")
-def init_environment():
-    host = os.getenv("BASE_HOST")
-    api_token = os.getenv("API_TOKEN")
+# Ensure project root is importable
+ROOT_DIR = Path(__file__).resolve().parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))

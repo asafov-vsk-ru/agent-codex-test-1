@@ -1,4 +1,3 @@
-import os
 import allure
 
 from playwright.sync_api import BrowserType, sync_playwright, Playwright, Browser, ViewportSize
@@ -11,7 +10,7 @@ class BrowserFactory:
         self.__config = config
 
     def __get_browser_type(self, playwright: Playwright) -> BrowserType:
-        browser = os.environ["BROWSER"]
+        browser = self.__config.browser_type or "Chrome"
         if browser == "Chrome":
             browser_type = playwright.chromium
         elif browser == "Firefox":

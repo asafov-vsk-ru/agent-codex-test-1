@@ -1,4 +1,3 @@
-import os
 import allure
 
 from typing import List
@@ -16,16 +15,16 @@ class KafkaClient:
     __producer_properties: dict = None
     host: str = None
 
-    def __init__(self, host: str, username: str, config: ApplicationConfig):
+    def __init__(self, host: str, username: str, password: str, config: ApplicationConfig):
         self.host = host
         self.__producer_properties = KafkaUtils.get_producer_properties(config)
         self.__consumer_properties = KafkaUtils.get_consumer_properties(config)
         self.__producer_properties["bootstrap.servers"] = host
         self.__producer_properties["sasl.username"] = username
-        self.__producer_properties["sasl.password"] = os.environ["KAFKA_PASSWORD"]
+        self.__producer_properties["sasl.password"] = password
         self.__consumer_properties["bootstrap.servers"] = host
         self.__consumer_properties["sasl.username"] = username
-        self.__consumer_properties["sasl.password"] = os.environ["KAFKA_PASSWORD"]
+        self.__consumer_properties["sasl.password"] = password
 
     @allure.step("Инициализация консьюмера кафки")
     def init_consumer(self, properties: dict = None) -> Consumer:
